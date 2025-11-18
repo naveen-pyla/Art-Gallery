@@ -4,61 +4,114 @@
   <meta charset="utf-8" />
   <title>Heritage Brush — Home</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <style>
-    :root{--accent:#7C5DFA;--muted:#666}
-    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;line-height:1.5;margin:0;background:#f7f7fb;color:#222}
-    header{background:linear-gradient(120deg, #fff,#f0f0ff);padding:28px 20px;box-shadow:0 4px 18px rgba(0,0,0,0.05)}
-    .container{max-width:980px;margin:20px auto;padding:0 18px}
-    h1{margin:0 0 6px;color:var(--accent)}
-    p.lead{color:var(--muted);margin-top:0}
-    .hero{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:18px}
-    .card{background:white;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(110,100,140,0.06);flex:1;min-width:260px}
-    .hero img{max-width:320px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
-    .cta{display:inline-block;background:var(--accent);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;margin-top:12px}
-    footer{color:var(--muted);text-align:center;padding:26px 0;font-size:14px;margin-top:28px}
-    .heritage{font-style:italic;color:#444}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f8;
+      color: #222;
+    }
+
+    header {
+      background: #7c5dfa;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+      max-width: 450px;
+      flex: 1;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 12px;
+      background: #7c5dfa;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="container">
-      <h1>Heritage Brush</h1>
-      <p class="lead">Hand-drawn paintings | Timeless techniques | Local artisans</p>
+
+<header>
+  <h1>Heritage Brush Art Shop</h1>
+  <p>Hand-drawn — Original — Timeless</p>
+</header>
+
+<div class="container">
+
+  <section class="hero">
+
+    <div class="card">
+      <h2>About Our Art Shop</h2>
+      <p>
+        Heritage Brush is a traditional art shop established in 1998.
+        We create hand-drawn paintings using pencil, charcoal, watercolor,
+        and ink. Every artwork is uniquely crafted and signed by our artists.
+      </p>
+
+      <p style="font-style: italic; color:#555;">
+        Our heritage comes from a long line of classical painters who believed
+        in natural media and expressive storytelling through art.
+      </p>
+
+      <a class="cta" href="products.html">Browse Paintings →</a>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="card">
-        <h2>About our shop</h2>
-        <p>
-          Heritage Brush is a small atelier established in 1998, preserving classical drawing and painting
-          practices. We sell limited original works—each piece is hand-signed by the artist and comes with a short
-          story about its inspiration.
-        </p>
-        <p class="heritage">
-          Our heritage: trained under traditional masters, our artists use natural media (pencil, ink, watercolor)
-          and follow a lineage of observation-based drawing.
-        </p>
-        <a class="cta" href="products.html">Browse Paintings →</a>
-      </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80" alt="Art Studio">
+      <p style="margin-top:12px; color:#666;">Original works | Limited editions | Worldwide delivery</p>
+    </div>
 
-      <div class="card" style="text-align:center">
-        <img src="https://unsplash.com/photos/woman-with-glow-in-the-dark-body-paint-aJcVr0Te3yQ" />
-        <p style="margin-top:12px;color:var(--muted)">Original, limited pieces. Worldwide shipping available.</p>
-      </div>
-    </section>
+  </section>
 
-    <section style="margin-top:22px" class="card">
-      <h3>Visit us / Contact</h3>
-      <p style="margin:6px 0">Address: 12 Art Lane, Old Town</p>
-      <p style="margin:6px 0">Email: hello@heritagebrush.example</p>
-      <p style="margin:6px 0">Phone: +91 98765 43210</p>
-    </section>
-  </main>
+  <section class="card" style="margin-top:25px;">
+    <h3>Contact Us</h3>
+    <p>Address: 12 Art Lane, Old Town</p>
+    <p>Email: hello@heritagebrush.example</p>
+    <p>Phone: +91 98765 43210</p>
+  </section>
 
-  <footer>
-    © Heritage Brush — Originals & limited prints. Click <a href="products.html">here</a> to start shopping.
-  </footer>
-</body>
-</html>
+</div>
+
+<footer>
+  © Heritage Brush — All artwork is hand-drawn.  
+  Click <a href=
