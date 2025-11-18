@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Heritage Brush — Payment</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Inter,Arial,sans-serif;background:#fafbfe;margin:0;color:#222}
+    .container{max-width:900px;margin:26px auto;padding:0 18px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .card{background:white;padding:16px;border-radius:10px;box-shadow:0 8px 30px rgba(60,60,90,0.06);margin-bottom:14px}
+    .product{display:flex;gap:14px;align-items:center}
+    .product img{width:140px;height:100px;object-fit:cover;border-radius:8px}
+    .price{font-weight:700;color:#7C5DFA}
+    label{display:block;margin:8px 0 4px;font-size:14px}
+    input[type=text], input[type=number], select{width:100%;padding:9px;border-radius:8px;border:1px solid #ddd}
+    .paymethods{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .paymethods button{padding:8px 12px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
+    .paymethods button.active{border-color:#7C5DFA;background:linear-gradient(90deg,#f7f1ff,#fff)}
+    .confirm{display:inline-block;background:#7C5DFA;color:white;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer}
+    .note{color:#666;font-size:13px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" style="text-decoration:none;color:#7C5DFA;font-weight:700">Heritage Brush</a>
+      <nav><a href="products.html">Back to products</a></nav>
+    </header>
+
+    <main>
+      <div class="card" id="productCard">
+        <!-- Filled by JS -->
+      </div>
+
+      <div class="card" id="paymentCard">
+        <h3>Payment</h3>
+        <p class="note">This is a demo payment form. No money will be charged.</p>
+
+        <div style="margin-top:8px">
+          <label>Select payment method</label>
+          <div class="paymethods" id="methods">
+            <button data-method="card" class="active">Card</button>
+            <button data-method="upi">UPI</button>
+            <button data-method="netbanking">Netbanking</button>
+          </div>
+        </div>
+
+        <form id="payForm" style="margin-top:12px">
+          <div id="methodFields">
+            <!-- Card fields default -->
+            <label>Cardholder name</label>
+            <input type="text" name="cardName" placeholder="Full name" required>
+
+            <label>Card number</label>
+            <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456" required pattern="\\d{12,19}">
+
+            <div style="display:flex;gap:8px">
+              <div style="flex:1">
+                <label>Expiry MM/YY</label>
+                <input type="text" name="expiry" placeholder="MM/YY" required pattern="\\d{2}/\\d{2}">
+              </div>
+              <div style="width:110px">
+                <label>CVV</label>
+                <input type="text" name="cvv" placeholder="123" required pattern="\\d{3,4}">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Billing email</label>
+            <input type="text" name="email" placeholder="name@example.com" required>
+          </div>
+
+          <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:13px;color:#555">Total</div>
+              <div id="total" style="font-weight:700;font-size:18px;color:#7C5DFA">₹ 0</div>
+            </div>
+            <button type="button" class="confirm" id="confirmBtn">Confirm Payment</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Helper: get query params
+    function getQuery() {
+      const qp = new URLSearchParams(location.search);
+      return {
+        id: qp.get('id'),
+        title: qp.get('title'),
+        price: qp.get('price')
+      };
+    }
+
+    // Fill product card
+    const q = getQuery();
+    const productCard = document.getElementById('productCard');
+    if (!q.id || !q.title || !q.price) {
+      productCard.innerHTML = '<div style="padding:14px"><strong>No product selected.</strong> Return to <a href="products.html">products</a>.</div>';
+      document.getElementById('paymentCard').style.display = 'none';
+    } else {
+      // Show product
+      productCard.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center">
+          <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?q=80&w=600&auto=format&fit=crop" alt="${escapeHtml(q.title)}" style="width:140px;height:100px;object-fit:cover;border-radius:8px">
+          <div>
+            <div style="font-weight:700">${escapeHtml(q.title)}</div>
+            <div style="color:#666;margin-top:6px">Product ID: ${escapeHtml(q.id)}</div>
+            <div style="font-size:18px;margin-top:8px;color:#7C5DFA">₹ ${Number(q.price).toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+      `;
+      // set total
+      document.getElementById('total').textContent = '₹ ' + Number(q.price).toLocaleString('en-IN');
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];}); }
+
+    // Payment method switching
+    const methods = document.getElementById('methods');
+    methods.addEventListener('click', e=>{
+      if(e.target.dataset && e.target.dataset.method){
+        Array.from(methods.querySelectorAll('button')).forEach(b=>b.classList.remove('active'));
+        e.target.classList.add('active');
+        renderFields(e.target.dataset.method);
+      }
+    });
+
+    const methodFields = document.getElementById('methodFields');
+    function renderFields(method){
+      methodFields.innerHTML = '';
+      if(method === 'card'){
+        methodFields.innerHTML = `
+          <label>Cardholder name</label>
+          <input type="text" name="cardName" placeholder="Full name" required>
+
+          <label>Card number</label>
+          <input type="text" name="cardNumber" placeholder="1234567812345678" required pattern="\\d{12,19}">
+
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <label>Expiry MM/YY</label>
+              <input type="text" name="expiry" placeholder="MM/YY" required pattern="\\d{2}/\\d{2}">
+            </div>
+            <div style="width:110px">
+              <label>CVV</label>
+              <input type="text" name="cvv" placeholder="123" required pattern="\\d{3,4}">
+            </div>
+          </div>
+        `;
+      } else if(method === 'upi'){
+        methodFields.innerHTML = `
+          <label>UPI ID (e.g., name@bank)</label>
+          <input type="text" name="upi" placeholder="name@bank" required pattern="[^\\s]{3,}">
+          <p class="note">You will be asked to confirm payment through your UPI app (demo only).</p>
+        `;
+      } else if(method === 'netbanking'){
+        methodFields.innerHTML = `
+          <label>Choose bank</label>
+          <select name="bank" required>
+            <option value="">-- select bank --</option>
+            <option>Bank of India</option>
+            <option>State Bank</option>
+            <option>City Bank</option>
+            <option>National Bank</option>
+          </select>
+          <p class="note">You'll be redirected to the bank's page (demo only).</p>
+        `;
+      }
+      // re-add email if not present
+      const existingEmail = document.querySelector('input[name="email"]');
+      if(!existingEmail){
+        const emailLabel = document.createElement('label');
+        emailLabel.textContent = 'Billing email';
+        const emailInput = document.createElement('input');
+        emailInput.type = 'text';
+        emailInput.name = 'email';
+        emailInput.placeholder = 'name@example.com';
+        emailInput.required = true;
+        methodFields.parentNode.appendChild(emailLabel);
+        methodFields.parentNode.appendChild(emailInput);
+      }
+    }
+
+    // initial fields already card — ensure email exists
+    (function ensureEmail(){
+      if(!document.querySelector('input[name="email"]')){
+        const container = document.createElement('div');
+        container.style.marginTop = '12px';
+        container.innerHTML = `<label>Billing email</label><input type="text" name="email" placeholder="name@example.com" required>`;
+        document.getElementById('payForm').insertBefore(container, document.getElementById('payForm').children[document.getElementById('payForm').children.length-1]);
+      }
+    })();
+
+    // Confirm button handler
+    document.getElementById('confirmBtn').addEventListener('click', function(){
+      // basic validation using form.checkValidity
+      const form = document.getElementById('payForm');
+      if(!form.checkValidity()){
+        // show native validation UI
+        form.reportValidity();
+        return;
+      }
+
+      // Get selected method
+      const methodBtn = methods.querySelector('button.active');
+      const method = methodBtn ? methodBtn.dataset.method : 'card';
+
+      // Build order object
+      const order = {
+        orderId: 'HB' + Date.now(),
+        productId: q.id,
+        productTitle: q.title,
+        amount: Number(q.price),
+        method: method
+      };
+
+      // Simulate processing briefly (no real payment)
+      this.disabled = true;
+      this.textContent = 'Processing...';
+
+      setTimeout(()=>{
+        // Redirect to thank you with order info in query string
+        const params = new URLSearchParams({
+          orderId: order.orderId,
+          id: order.productId,
+          title: order.productTitle,
+          amount: order.amount
+        });
+        location.href = 'thankyou.html?' + params.toString();
+      }, 900); // short demo delay
+    });
+  </script>
+</body>
+</html>
