@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Heritage Brush — Thank You</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#fbfbff,#ffffff);margin:0;color:#222;display:flex;min-height:100vh;align-items:center;justify-content:center}
+    .card{background:white;padding:26px;border-radius:14px;width:92%;max-width:700px;box-shadow:0 18px 40px rgba(60,60,90,0.08);text-align:center}
+    h1{color:#7C5DFA;margin:6px 0}
+    .details{margin-top:12px;color:#444}
+    .btn{display:inline-block;margin-top:18px;padding:10px 14px;border-radius:10px;background:#7C5DFA;color:white;text-decoration:none}
+    small{color:#777;display:block;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="card" id="mainCard">
+    <h1>Thank you!</h1>
+    <p class="details" id="msg">We have received your order.</p>
+
+    <div id="orderBox" style="margin-top:14px;background:#f7f7ff;padding:12px;border-radius:10px;display:inline-block;text-align:left">
+      <!-- order details -->
+    </div>
+
+    <div style="margin-top:20px">
+      <a class="btn" href="index.html" id="homeBtn">Back to Home</a>
+      <a class="btn" href="products.html" style="background:#444;color:white;margin-left:8px">Buy another</a>
+    </div>
+
+    <small>Order copies the info from the demo form — this is a demo shop page.</small>
+  </div>
+
+  <script>
+    const qp = new URLSearchParams(location.search);
+    const orderId = qp.get('orderId') || 'N/A';
+    const id = qp.get('id') || 'N/A';
+    const title = qp.get('title') || 'Unknown item';
+    const amount = qp.get('amount') ? Number(qp.get('amount')) : 0;
+
+    const orderBox = document.getElementById('orderBox');
+
+    orderBox.innerHTML = `
+      <div><strong>Order ID:</strong> ${escapeHtml(orderId)}</div>
+      <div style="margin-top:6px"><strong>Item:</strong> ${escapeHtml(title)} (ID: ${escapeHtml(id)})</div>
+      <div style="margin-top:6px"><strong>Amount Paid:</strong> ₹ ${amount.toLocaleString('en-IN')}</div>
+    `;
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];}); }
+
+    // If user clicks home, they go to index.html (already linked)
+  </script>
+</body>
+</html>
