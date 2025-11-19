@@ -75,7 +75,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <img class="thumb" src="${p.img}" alt="${p.title}">
         <div class="title">${p.title}</div>
         <div class="price">₹ ${p.price.toLocaleString('en-IN')}</div>
-        <a class="btn" href="payment.html?${new URLSearchParams({id:p.id,title:p.title,price:p.price}).toString()}">Buy — Select</a>
+        <a class="btn" href="payment.html?${new URLSearchParams({id:p.id,title:p.title,price:p.price}).toString()}">Select</a>
       `;
       gallery.appendChild(div);
     });
