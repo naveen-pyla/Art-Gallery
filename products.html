@@ -86,7 +86,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <img class="thumb" src="${p.img}" alt="${p.title}">
         <div class="title">${p.title}</div>
         <div class="price">₹ ${p.price.toLocaleString('en-IN')}</div>
-        <a class="btn" href="https://chic-churros-a39749.netlify.app/payment.html?id=1&title=Quiet+Alleyway&price=4500?${new URLSearchParams({id:p.id,title:p.title,price:p.price}).toString()}">Select</a>
+        <a class="btn" href="https://chic-churros-a39749.netlify.app/payment.html?id=1&title=Quiet+Alleyway&price=4500?id=1&title=Quiet+Alleyway&price=4500?${new URLSearchParams({id:p.id,title:p.title,price:p.price}).toString()}">Select</a>
       `;
       gallery.appendChild(div);
     });
